@@ -1,8 +1,8 @@
 name: flutter_haopintui
-description: A new Flutter plugin.
+description:  好品推 SDK在Flutter上的实现。.
 version: 0.0.1
-author:
-homepage:
+author: haopintui <haopintui@qq.com>
+homepage: https://github.com/haopintui/flutter_haopintui
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
