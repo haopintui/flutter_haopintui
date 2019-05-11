@@ -3,6 +3,11 @@ package com.youdanhui.flutter_haopintui;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.youdanhui.flutter_haopintui.util.ToolsUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -24,7 +29,7 @@ public class FlutterHaopintuiPlugin implements MethodCallHandler {
 
   private FlutterHaopintuiPlugin(Registrar registrar) {
     FlutterHaopintuiPlugin.registrar = registrar;
-    MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_haopintui");
+    MethodChannel channel = new MethodChannel(registrar.messenger(), "app.youadnhui.com/haopintui");
     channel.setMethodCallHandler(this);
     this.channel = channel;
   }
@@ -34,20 +39,32 @@ public class FlutterHaopintuiPlugin implements MethodCallHandler {
     if (call.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     }
+    else if(call.method.equals("isInstall")){
+      isInstall(call,result);
+    }
     else if(call.method.equals("openApp")){
-      String url = call.argument("url");
-      String packageName = call.argument("packageName");
-      openApp(url,packageName);
-      result.success("success");
+//      String url = call.argument("url");
+//      String packageName = call.argument("packageName");
+      openApp(call,result);
+//      result.success("success");
     }
     else {
       result.notImplemented();
     }
   }
 
-  public void openApp(String url,String packageName){
+
+  public void isInstall(MethodCall call, Result result) {
+    String packageName = call.argument("packageName");
+    result.success(ToolsUtil.isInstall(registrar.activeContext(),packageName));
+  }
+
+  public void openApp(MethodCall call, Result result){
+    String url = call.argument("url");
+    String packageName = call.argument("packageName");
 
     Intent action = new Intent(Intent.ACTION_VIEW);
+//    Intent action = registrar.activity().getIntent();
     action.setPackage(packageName);
 
 //        action.setAction(Intent.ACTION_MAIN);
@@ -58,6 +75,10 @@ public class FlutterHaopintuiPlugin implements MethodCallHandler {
     builder.append(url);
     action.setData(Uri.parse(builder.toString()));
     registrar.activity().startActivityForResult(action,0);
+
+    Map<String,String> data = new HashMap<String,String>();
+    data.put("status" , "1");
+    result.success(data);
 
 //        PackageManager packageManager = context.getPackageManager();
 //        StringBuilder builder = new StringBuilder();
