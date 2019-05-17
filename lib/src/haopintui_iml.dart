@@ -26,6 +26,8 @@ Future<bool> isInstall({String scheme,
     "packageName": packageName
   };
   return await _channel.invokeMethod("isInstall", des);
+  // Map result = await _channel.invokeMethod("isInstall", des);
+  // return result["status"];
 }
 
 Future<OpenResult> openApp({@required String url,

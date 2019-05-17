@@ -42,9 +42,9 @@
     
     scheme = [scheme stringByAppendingString: @"://"];
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:scheme]]){
-        result(@(true));
+        result([NSNumber numberWithBool:TRUE]);
     }else{
-        result(@(false));
+        result([NSNumber numberWithBool:FALSE]);
     }
 }
 
